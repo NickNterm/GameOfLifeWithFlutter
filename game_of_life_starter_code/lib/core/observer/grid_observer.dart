@@ -9,7 +9,7 @@ enum GridEvent { tickGrid }
 class GridObserver {
   // State Stream Controller
   final StreamController<GridState> _counterController =
-      StreamController<GridState>();
+      StreamController<GridState>.broadcast();
   StreamSink<GridState> get gridSink => _counterController.sink;
   Stream<GridState> get gridStream => _counterController.stream;
 

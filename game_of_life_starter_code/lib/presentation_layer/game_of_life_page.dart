@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:game_of_life_starter_code/core/constants/colors.dart';
 import 'package:game_of_life_starter_code/core/observer/grid_observer.dart';
 
 import '../core/singleton/fps_singleton.dart';
@@ -22,7 +23,7 @@ class _GameOfLifePageState extends State<GameOfLifePage> {
   void initState() {
     super.initState();
     _gridObserver = GridObserver();
-    Timer.periodic(const Duration(milliseconds: 50), (Timer t) {
+    Timer.periodic(const Duration(milliseconds: 200), (Timer t) {
       fps = FPSSingleton().fps.toString();
       setState(() {});
       _gridObserver.eventSink.add(GridEvent.tickGrid);
@@ -40,6 +41,13 @@ class _GameOfLifePageState extends State<GameOfLifePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Game of Life'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.games),
+          ),
+        ],
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -59,12 +67,12 @@ class _GameOfLifePageState extends State<GameOfLifePage> {
                         return Container(
                           decoration: BoxDecoration(
                             color: grid.cells[index].isAlive == true
-                                ? Colors.black
-                                : Colors.white,
+                                ? kPrimaryColor
+                                : kBackgroundColor,
                             border: Border.all(
-                              color: Colors.grey,
-                              width: 0.3,
-                              strokeAlign: 0.15,
+                              color: Colors.grey.withOpacity(0.4),
+                              width: 0.5,
+                              strokeAlign: 0.25,
                             ),
                           ),
                         );
@@ -72,17 +80,40 @@ class _GameOfLifePageState extends State<GameOfLifePage> {
                     );
                   } else {
                     print("No data");
-                    return Text(
+                    return const Text(
                       'Empty data',
                     );
                   }
                 }),
           ),
-          Text(
-            'FPS: ${fps}',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          Positioned(
+            top: 20,
+            right: 20,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blueGrey.shade900,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: StreamBuilder<GridState>(
+                  stream: _gridObserver.gridStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Generation: ${snapshot.data!.getGrid().numOfGeneration}",
+                          ),
+                          Text(
+                            'FPS: $fps',
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Text("Generation: 0");
+                    }
+                  }),
             ),
           ),
           Positioned(

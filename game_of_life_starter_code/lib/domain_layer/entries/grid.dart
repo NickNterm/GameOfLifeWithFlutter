@@ -13,6 +13,7 @@ class Grid {
   int fullSize;
   int rowLen;
 
+  int numOfGeneration = 0;
   // It is a one dimension list to have easier managment
   List<Cell> cells = [];
 
@@ -92,6 +93,8 @@ class Grid {
 
   // This function is the pulse of the game
   void tickGrid() {
+    // increment the generation counter
+    numOfGeneration++;
     // create a temp grid to store the next generation
     List<Cell> nextGrid = [];
     for (int i = 0; i < fullSize; i++) {

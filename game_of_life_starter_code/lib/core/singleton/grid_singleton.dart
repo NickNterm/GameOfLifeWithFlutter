@@ -17,4 +17,17 @@ class GridSingleton {
   GridSingleton._internal() {
     instance = this;
   }
+
+  void setGrid(Grid newGrid) {
+    grid = newGrid;
+  }
+
+  void loadPattern(List<List<int>> pattern) {
+    Grid tempGrid = grid;
+    grid = Grid(
+      rowLen: tempGrid.rowLen,
+      fullSize: tempGrid.fullSize,
+      pattern: pattern,
+    );
+  }
 }
