@@ -1,33 +1,27 @@
-import 'package:game_of_life_starter_code/domain_layer/entries/grid.dart';
-import 'package:game_of_life_starter_code/patterns/grid_starts.dart';
+import '../../patterns/grid_starts.dart';
+import '../builder/grid_builder.dart';
+import '../builder/grid_director.dart';
 
 class GridSingleton {
+  // singleton instance
   static GridSingleton? instance;
 
-  Grid grid = Grid(
-    rowLen: 50,
-    fullSize: 4000,
-    pattern: glider_gun,
-  );
+  GridDirector director = GridDirector();
 
+  // contructor that returns the instance
   factory GridSingleton() {
     return instance ?? GridSingleton._internal();
   }
 
+  // internal constructor
   GridSingleton._internal() {
+    director.setBuilder(PatternGridBuilder(pattern: glider_gun));
+    director.buildGrid();
     instance = this;
   }
 
-  void setGrid(Grid newGrid) {
-    grid = newGrid;
-  }
-
-  void loadPattern(List<List<int>> pattern) {
-    Grid tempGrid = grid;
-    grid = Grid(
-      rowLen: tempGrid.rowLen,
-      fullSize: tempGrid.fullSize,
-      pattern: pattern,
-    );
+  // create an set a new grid
+  void setGridDirector(GridDirector ndirector) {
+    director = ndirector;
   }
 }

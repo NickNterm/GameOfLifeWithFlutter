@@ -1,12 +1,13 @@
-import '../core/singleton/fps_singleton.dart';
-
 class FPSCounter {
+  // fps counter
   int _frames = 0;
   int _lastTime = 0;
   int _fps = 0;
 
+  // fps getter
   int get fps => _fps;
 
+  //update the fps counter
   void update(int time) {
     _frames++;
     if (time - _lastTime >= 1000) {
@@ -14,6 +15,5 @@ class FPSCounter {
       _frames = 0;
       _lastTime = time;
     }
-    FPSSingleton().fps = _fps;
   }
 }

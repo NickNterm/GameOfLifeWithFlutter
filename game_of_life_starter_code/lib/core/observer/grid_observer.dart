@@ -4,7 +4,7 @@ import 'package:game_of_life_starter_code/core/state/grid_state.dart';
 
 import '../singleton/grid_singleton.dart';
 
-enum GridEvent { tickGrid }
+enum GridEvent { tickGrid, setGrid }
 
 class GridObserver {
   // State Stream Controller
@@ -13,7 +13,7 @@ class GridObserver {
   StreamSink<GridState> get gridSink => _counterController.sink;
   Stream<GridState> get gridStream => _counterController.stream;
 
-  GridState state = GridLoaded(grid: GridSingleton().grid);
+  GridState state = GridLoaded(grid: GridSingleton().director.getGrid());
 
   // Event Stream Controller
   final StreamController<GridEvent> _eventController =
@@ -24,7 +24,8 @@ class GridObserver {
   StreamSubscription? listener;
 
   GridObserver() {
-    _counterController.add(GridLoaded(grid: GridSingleton().grid));
+    _counterController
+        .add(GridLoaded(grid: GridSingleton().director.getGrid()));
     listener = eventStream.listen((GridEvent event) {
       switch (event) {
         case GridEvent.tickGrid:
@@ -33,9 +34,11 @@ class GridObserver {
             gridSink.add(GridLoading());
             state.nextState();
             gridSink.add(GridLoaded(grid: state.getGrid()));
-          } else {
-            print("To Many Ticks");
           }
+          break;
+        case GridEvent.setGrid:
+          state = GridLoaded(grid: GridSingleton().director.getGrid());
+          _counterController.add(state);
           break;
         default:
           break;
