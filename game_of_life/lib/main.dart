@@ -7,7 +7,7 @@ import 'core/constants/colors.dart';
 
 void main() {
   runApp(
-    const MaterialApp(home: MyApp()),
+    const MyApp(),
   );
 }
 

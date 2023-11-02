@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iqsoft.game_of_life">
    <application
-        android:label="Game Of Life"
+       android:label="Game Of Life"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
